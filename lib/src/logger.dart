@@ -33,8 +33,9 @@ class LogEvent {
 class OutputEvent {
   final Level level;
   final List<String> lines;
+  final dynamic message;
 
-  OutputEvent(this.level, this.lines);
+  OutputEvent(this.level, this.lines, this.message);
 }
 
 @Deprecated('Use a custom LogFilter instead')
@@ -125,15 +126,15 @@ class Logger {
       var output = _printer.log(logEvent);
 
       if (output.isNotEmpty) {
-        var outputEvent = OutputEvent(level, output);
+        var outputEvent = OutputEvent(level, output, message);
         _streamController.add(outputEvent);
         // Issues with log output should NOT influence
         // the main software behavior.
         try {
           _output.output(outputEvent);
         } catch (e, s) {
-            print(e);
-            print(s);
+          print(e);
+          print(s);
         }
       }
     }

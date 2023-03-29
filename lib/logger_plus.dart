@@ -5,6 +5,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger_plus/src/ansi_parser.dart';
 import 'package:logger_plus/src/logger.dart';
 import 'package:logger_plus/src/shake_detector.dart';

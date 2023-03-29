@@ -3,13 +3,13 @@ part of logger_plus;
 class LogConsoleOnShake extends StatefulWidget {
   final Widget child;
   final bool dark;
-  final bool debugOnly;
+  final bool debugMode;
 
   const LogConsoleOnShake({
     Key? key,
     required this.child,
     required this.dark,
-    this.debugOnly = true,
+    this.debugMode = true,
   }) : super(key: key);
 
   @override
@@ -23,13 +23,7 @@ class _LogConsoleOnShakeState extends State<LogConsoleOnShake> {
   @override
   void initState() {
     super.initState();
-
-    if (widget.debugOnly) {
-      assert(() {
-        _init();
-        return true;
-      }());
-    } else {
+    if (widget.debugMode) {
       _init();
     }
   }

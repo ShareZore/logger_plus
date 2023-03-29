@@ -46,8 +46,10 @@ class RenderedEvent {
   final Level level;
   final TextSpan span;
   final String lowerCaseText;
+  final dynamic message;
 
-  RenderedEvent(this.id, this.level, this.span, this.lowerCaseText);
+  RenderedEvent(
+      this.id, this.level, this.span, this.lowerCaseText, this.message);
 }
 
 class _LogConsoleState extends State<LogConsole> {
@@ -178,7 +180,7 @@ class _LogConsoleState extends State<LogConsole> {
 
   Widget _buildLogContent() {
     return Container(
-      color: widget.dark ? Colors.black : Colors.grey[150],
+      color: widget.dark ? Colors.black54 : Colors.grey[150],
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: SizedBox(
@@ -188,10 +190,23 @@ class _LogConsoleState extends State<LogConsole> {
             controller: _scrollController,
             itemBuilder: (context, index) {
               var logEntry = _filteredBuffer[index];
-              return Text.rich(
-                logEntry.span,
-                key: Key(logEntry.id.toString()),
-                style: TextStyle(fontSize: _logFontSize),
+              return GestureDetector(
+                onLongPress: () {
+                  //复制成功
+                  Clipboard.setData(
+                      ClipboardData(text: logEntry.message.toString()));
+                  Fluttertoast.showToast(msg: "复制成功");
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 4),
+                  padding: const EdgeInsets.all(4),
+                  color: Colors.black12,
+                  child: Text.rich(
+                    logEntry.span,
+                    key: Key(logEntry.id.toString()),
+                    style: TextStyle(fontSize: _logFontSize),
+                  ),
+                ),
               );
             },
             itemCount: _filteredBuffer.length,
@@ -325,6 +340,7 @@ class _LogConsoleState extends State<LogConsole> {
       event.level,
       TextSpan(children: parser.spans),
       text.toLowerCase(),
+      event.message,
     );
   }
 
